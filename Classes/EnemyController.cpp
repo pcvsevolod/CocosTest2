@@ -39,3 +39,32 @@ void EnemyController::getHit(cocos2d::Node *node) {
         }
     }
 }
+
+void EnemyController::startShootingBack() {
+    auto delay = DelayTime::create(shotDelay);
+    auto func = CallFunc::create(CC_CALLBACK_0(EnemyController::shootBack, this));
+    auto seq = Sequence::create(delay, func, NULL);
+    auto action = RepeatForever::create(seq);
+    scene->runAction(action);
+}
+
+void EnemyController::shootBack() {
+    if (enemies.empty()) {
+        return;
+    }
+    auto shooter = enemies[std::rand() % enemies.size()];
+    auto projectile = Sprite::create("BadBullet.png");
+    projectile->setPosition(shooter->sprite->getPosition());
+
+    auto projectileBody = PhysicsBody::createCircle(projectile->getContentSize().width / 2, PHYSICSBODY_MATERIAL_DEFAULT);
+    projectileBody->setDynamic(false);
+    projectileBody->setCollisionBitmask(EnemyController::projectileCollisionBitmask);
+    projectileBody->setContactTestBitmask(true);
+    projectile->setPhysicsBody(projectileBody);
+
+    scene->addChild(projectile);
+
+    auto move = MoveBy::create(shotDuration, shotDirection);
+    auto removeSelf = RemoveSelf::create();
+    projectile->runAction(Sequence::create(move, removeSelf, NULL));
+}

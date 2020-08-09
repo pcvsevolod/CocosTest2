@@ -10,10 +10,17 @@ public:
     std::vector<Enemy*> enemies;
     static const int collisionBitmask = 16;
     static const int projectileCollisionBitmask = 32;
+    cocos2d::Point shotDirection = cocos2d::Point(4, -400);
+    float shotDuration = 4;
+    float shotDelay = 2;
 
     EnemyController(cocos2d::Scene * scene);
     void place1();
     void getHit(cocos2d::Node * node);
+    void startShootingBack();
+
+private:
+    void shootBack();
 };
 
 

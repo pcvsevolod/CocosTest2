@@ -38,6 +38,7 @@ bool GamePlay::init() {
 
     ec = new EnemyController(this);
     ec->place1();
+    ec->startShootingBack();
 
     initTouch();
     initCollision();
