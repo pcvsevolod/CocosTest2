@@ -25,8 +25,8 @@ bool GamePlay::init() {
     if (!Scene::init()) {
         return false;
     }
-    auto visibleSize = Director::getInstance()->getVisibleSize();
-    Vec2 origin = Director::getInstance()->getVisibleOrigin();
+    visibleSize = Director::getInstance()->getVisibleSize();
+    origin = Director::getInstance()->getVisibleOrigin();
 
     /*auto edgeBody = PhysicsBody::createEdgeBox(visibleSize, PHYSICSBODY_MATERIAL_DEFAULT, 3);
     auto edgeNode = Node::create();
@@ -43,6 +43,7 @@ bool GamePlay::init() {
     initTouch();
     initCollision();
     initUpdate();
+    initLabel();
 
 
     return true;
@@ -97,6 +98,19 @@ bool GamePlay::onContactBegin(cocos2d::PhysicsContact &contact) {
         this->removeChild(a->getNode());
     }
 
+    if(EnemyController::projectileCollisionBitmask == a->getCollisionBitmask() && SpaceShip::collisionBitmask == b->getCollisionBitmask()){
+        CCLOG("hsajdklhfjsdhjfhsjkdfa spaceship hit");
+        spaceShip.getHit();
+        this->removeChild(a->getNode());
+        updateLabel();
+    }
+    if(EnemyController::projectileCollisionBitmask == b->getCollisionBitmask() && SpaceShip::collisionBitmask == a->getCollisionBitmask()){
+        CCLOG("hsajdklhfjsdhjfhsjkdfa spaceship hit");
+        spaceShip.getHit();
+        this->removeChild(b->getNode());
+        updateLabel();
+    }
+
     return true;
 }
 
@@ -122,6 +136,22 @@ void GamePlay::initUpdate() {
     this->scheduleUpdate();
 }
 
+void GamePlay::initLabel() {
+    livesLabel = Label::createWithTTF("Lives = " + std::to_string(spaceShip.lives), "fonts/Marker Felt.ttf", 12);
+    livesLabel->setPosition(Vec2(origin.x + visibleSize.width / 10 * 2,
+                                 origin.y + visibleSize.height - livesLabel->getContentSize().height));
+    this->addChild(livesLabel, 1);
+}
+
 GamePlay::~GamePlay() {
     delete ec;
+}
+
+void GamePlay::updateLabel() {
+    livesLabel->setString("Lives = " + std::to_string(spaceShip.lives));
+    if(spaceShip.lives <= 0) {
+        livesLabel->setString("Game Over");
+        //auto scene = GameOverScene::createScene();
+        //Director::getInstance()->replaceScene(scene);
+    }
 }

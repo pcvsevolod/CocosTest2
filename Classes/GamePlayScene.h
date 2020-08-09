@@ -12,13 +12,20 @@ private:
     cocos2d::Point touchPoint;
     SpaceShip spaceShip;
     EnemyController * ec;
+    cocos2d::Label * livesLabel;
+
+    void updateLabel();
 
     void initTouch();
     void initCollision();
     void initUpdate();
+    void initLabel();
 
 
 public:
+    cocos2d::Size visibleSize;
+    cocos2d::Vec2 origin;
+
     ~GamePlay();
 
     static cocos2d::Scene *createScene();

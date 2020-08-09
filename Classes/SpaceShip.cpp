@@ -41,3 +41,7 @@ void SpaceShip::startShooting() {
 void SpaceShip::stopShooting() {
     gun->stopShooting();
 }
+
+void SpaceShip::getHit() {
+    lives--;
+}
