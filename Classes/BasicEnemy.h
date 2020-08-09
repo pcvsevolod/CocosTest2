@@ -5,6 +5,9 @@
 #include "Enemy.h"
 
 class BasicEnemy : public Enemy {
+private:
+    void startMoving();
+
 public:
     BasicEnemy(cocos2d::Scene * scene, cocos2d::Point position);
     bool getHit() override;

@@ -11,7 +11,7 @@ void EnemyController::place1() {
     std::vector<Point> badPositions;
 
     for (int i = 0; i <4; ++i){
-        for (int j = 1; j < 7; ++j) {
+        for (int j = 1; j < 3; ++j) {
             badPositions.emplace_back(visibleSize.width / 2 + origin.x - j * 8, visibleSize.height / 8 * 7 + origin.y - i * 8);
             badPositions.emplace_back(visibleSize.width / 2 + origin.x + j * 8, visibleSize.height / 8 * 7 + origin.y - i * 8);
         }

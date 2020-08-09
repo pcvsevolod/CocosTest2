@@ -12,8 +12,18 @@ BasicEnemy::BasicEnemy(cocos2d::Scene * scene, cocos2d::Point position) : Enemy(
     badShipBody->setContactTestBitmask(true);
     sprite->setPhysicsBody(badShipBody);
     scene->addChild(sprite);
+    startMoving();
 }
 
 bool BasicEnemy::getHit()  {
     return true;
+}
+
+void BasicEnemy::startMoving() {
+    auto moveLeft = MoveBy::create(1, Point(-10, 0));
+    auto moveRight = MoveBy::create(1, Point(10, 0));
+    auto moveDown = MoveBy::create(1, Point(0, -10));
+    auto seq = Sequence::create(moveLeft, moveDown, moveRight, moveDown, NULL);
+    auto rep = RepeatForever::create(seq);
+    sprite->runAction(rep);
 }
