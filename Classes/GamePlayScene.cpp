@@ -44,6 +44,8 @@ bool GamePlay::init() {
     initCollision();
     initUpdate();
     initLabel();
+    initCheckOffScreen();
+
 
 
     return true;
@@ -154,4 +156,16 @@ void GamePlay::updateLabel() {
         //auto scene = GameOverScene::createScene();
         //Director::getInstance()->replaceScene(scene);
     }
+}
+
+void GamePlay::checkEnemiesOffScreen() {
+    ec->checkOffScreen();
+}
+
+void GamePlay::initCheckOffScreen() {
+    auto delay = DelayTime::create(1);
+    auto func = CallFunc::create(CC_CALLBACK_0(GamePlay::checkEnemiesOffScreen, this));
+    auto seq = Sequence::create(delay, func, NULL);
+    auto rep = RepeatForever::create(seq);
+    this->runAction(rep);
 }

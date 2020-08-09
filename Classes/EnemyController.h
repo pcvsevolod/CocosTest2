@@ -18,6 +18,7 @@ public:
     void place1();
     void getHit(cocos2d::Node * node);
     void startShootingBack();
+    void checkOffScreen();
 
 private:
     void shootBack();

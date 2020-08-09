@@ -10,20 +10,23 @@ void EnemyController::place1() {
 
     std::vector<Point> badPositions;
 
-    for (int i = 0; i <4; ++i){
+    for (int i = 0; i < 4; ++i) {
         for (int j = 1; j < 3; ++j) {
-            badPositions.emplace_back(visibleSize.width / 2 + origin.x - j * 8, visibleSize.height / 8 * 7 + origin.y - i * 8);
-            badPositions.emplace_back(visibleSize.width / 2 + origin.x + j * 8, visibleSize.height / 8 * 7 + origin.y - i * 8);
+            badPositions.emplace_back(visibleSize.width / 2 + origin.x - j * 8,
+                                      visibleSize.height / 8 * 7 + origin.y - i * 8);
+            badPositions.emplace_back(visibleSize.width / 2 + origin.x + j * 8,
+                                      visibleSize.height / 8 * 7 + origin.y - i * 8);
         }
-        badPositions.emplace_back(visibleSize.width / 2 + origin.x, visibleSize.height / 8 * 7 + origin.y - i * 8);
+        badPositions.emplace_back(visibleSize.width / 2 + origin.x,
+                                  visibleSize.height / 8 * 7 + origin.y - i * 8);
     }
-    for (auto & bp : badPositions) {
+    for (auto &bp : badPositions) {
         auto enemy = new BasicEnemy(scene, bp);
         enemies.push_back(enemy);
     }
 }
 
-EnemyController::EnemyController(cocos2d::Scene * scene) {
+EnemyController::EnemyController(cocos2d::Scene *scene) {
     this->scene = scene;
 }
 
@@ -36,6 +39,7 @@ void EnemyController::getHit(cocos2d::Node *node) {
                 delete enemies[i];
                 enemies.erase(enemies.begin() + i);
             }
+            return;
         }
     }
 }
@@ -56,7 +60,8 @@ void EnemyController::shootBack() {
     auto projectile = Sprite::create("BadBullet.png");
     projectile->setPosition(shooter->sprite->getPosition());
 
-    auto projectileBody = PhysicsBody::createCircle(projectile->getContentSize().width / 2, PHYSICSBODY_MATERIAL_DEFAULT);
+    auto projectileBody = PhysicsBody::createCircle(projectile->getContentSize().width / 2,
+                                                    PHYSICSBODY_MATERIAL_DEFAULT);
     projectileBody->setDynamic(false);
     projectileBody->setCollisionBitmask(EnemyController::projectileCollisionBitmask);
     projectileBody->setContactTestBitmask(true);
@@ -67,4 +72,16 @@ void EnemyController::shootBack() {
     auto move = MoveBy::create(shotDuration, shotDirection);
     auto removeSelf = RemoveSelf::create();
     projectile->runAction(Sequence::create(move, removeSelf, NULL));
+}
+
+void EnemyController::checkOffScreen() {
+    for (int i = enemies.size() - 1; i >= 0; --i) {
+        if (enemies[i]->sprite->getPosition().y < 0) {
+            scene->removeChild(enemies[i]->sprite);
+            delete enemies[i];
+            enemies.erase(enemies.begin() + i);
+            return;
+        }
+    }
+    CCLOG("hsajdklhfjsdhjfhsjkdfa size = %d", enemies.size());
 }

@@ -15,11 +15,13 @@ private:
     cocos2d::Label * livesLabel;
 
     void updateLabel();
+    void checkEnemiesOffScreen();
 
     void initTouch();
     void initCollision();
     void initUpdate();
     void initLabel();
+    void initCheckOffScreen();
 
 
 public:
