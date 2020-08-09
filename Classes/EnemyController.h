@@ -8,10 +8,12 @@ class EnemyController {
 public:
     cocos2d::Scene * scene;
     std::vector<Enemy*> enemies;
-    const int collisionBitmask = 16;
+    static const int collisionBitmask = 16;
+    static const int projectileCollisionBitmask = 32;
 
     EnemyController(cocos2d::Scene * scene);
     void place1();
+    void getHit(cocos2d::Node * node);
 };
 
 

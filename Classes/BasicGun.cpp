@@ -1,4 +1,5 @@
 #include "BasicGun.h"
+#include "SpaceShip.h"
 
 USING_NS_CC;
 
@@ -13,7 +14,7 @@ void BasicGun::shoot() {
 
         auto projectileBody = PhysicsBody::createCircle(projectile->getContentSize().width / 2, PHYSICSBODY_MATERIAL_DEFAULT);
         projectileBody->setDynamic(false);
-        projectileBody->setCollisionBitmask(2);
+        projectileBody->setCollisionBitmask(SpaceShip::projectileCollisionBitmask);
         projectileBody->setContactTestBitmask(true);
         projectile->setPhysicsBody(projectileBody);
 
@@ -21,32 +22,6 @@ void BasicGun::shoot() {
 
         auto move = MoveBy::create(3, dir);
         auto removeSelf = RemoveSelf::create();
-        projectile->runAction(Sequence::create(move, removeSelf, NULL));
-    }
-}
-
-void BasicGun::f() {
-    CCLOG("hsajdklhfjsdhjfhsjkdfa asf");
-    std::vector<Point> directions;
-
-    directions.emplace_back(0, 1000);
-
-    for (auto & dir : directions){
-        auto projectile = Sprite::create("Projectile.png");
-        projectile->setPosition(sprite->getPosition());
-
-        auto projectileBody = PhysicsBody::createCircle(projectile->getContentSize().width / 2, PHYSICSBODY_MATERIAL_DEFAULT);
-        projectileBody->setDynamic(false);
-        projectileBody->setCollisionBitmask(2);
-        projectileBody->setContactTestBitmask(true);
-        projectile->setPhysicsBody(projectileBody);
-
-        scene->addChild(projectile);
-
-        auto move = MoveBy::create(3, dir);
-        //auto wait = DelayTime::create(0.1f);
-        auto removeSelf = RemoveSelf::create();
-        //projectile->runAction(Sequence::create(move, wait, removeSelf, NULL));
         projectile->runAction(Sequence::create(move, removeSelf, NULL));
     }
 }

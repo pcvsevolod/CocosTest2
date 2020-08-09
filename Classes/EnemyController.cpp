@@ -26,3 +26,16 @@ void EnemyController::place1() {
 EnemyController::EnemyController(cocos2d::Scene * scene) {
     this->scene = scene;
 }
+
+void EnemyController::getHit(cocos2d::Node *node) {
+    for (int i = 0; i < enemies.size(); ++i) {
+        if (enemies[i]->sprite == node) {
+            bool dead = enemies[i]->getHit();
+            if (dead) {
+                scene->removeChild(node);
+                delete enemies[i];
+                enemies.erase(enemies.begin() + i);
+            }
+        }
+    }
+}

@@ -5,7 +5,7 @@ USING_NS_CC;
 Scene* GamePlay::createScene()
 {
     auto scene = Scene::createWithPhysics();
-    //scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
     scene->getPhysicsWorld()->setGravity(Vec2(0, 0));
 
     auto layer = GamePlay::create();
@@ -79,8 +79,22 @@ void GamePlay::update(float delta) {
 }
 
 bool GamePlay::onContactBegin(cocos2d::PhysicsContact &contact) {
+    CCLOG("hsajdklhfjsdhjfhsjkdfa HITHITHIT");
     PhysicsBody *a = contact.getShapeA()->getBody();
     PhysicsBody *b = contact.getShapeB()->getBody();
+    CCLOG("hsajdklhfjsdhjfhsjkdfa a = %d", a->getCollisionBitmask());
+    CCLOG("hsajdklhfjsdhjfhsjkdfa b = %d", b->getCollisionBitmask());
+
+    if(EnemyController::collisionBitmask == a->getCollisionBitmask() && SpaceShip::projectileCollisionBitmask == b->getCollisionBitmask()){
+        CCLOG("hsajdklhfjsdhjfhsjkdfa enemy hit");
+        ec->getHit(a->getNode());
+        this->removeChild(b->getNode());
+    }
+    if(EnemyController::collisionBitmask == b->getCollisionBitmask() && SpaceShip::projectileCollisionBitmask == a->getCollisionBitmask()){
+        CCLOG("hsajdklhfjsdhjfhsjkdfa enemy hit");
+        ec->getHit(b->getNode());
+        this->removeChild(a->getNode());
+    }
 
     return true;
 }

@@ -10,7 +10,7 @@ public:
 
     Enemy(cocos2d::Scene * scene);
 
-    virtual void getHit() = 0;
+    virtual bool getHit() = 0;
 
 };
 

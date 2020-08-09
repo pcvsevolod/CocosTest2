@@ -12,7 +12,8 @@ private:
     Gun * gun;
 public:
     cocos2d::Sprite * sprite;
-    const int collisionBitmask = 1;
+    static const int collisionBitmask = 1;
+    static const int projectileCollisionBitmask = 2;
     void create(cocos2d::Scene *, cocos2d::Point);
     void move(cocos2d::Point destination, float delta);
     void startShooting();

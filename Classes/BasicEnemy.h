@@ -7,7 +7,7 @@
 class BasicEnemy : public Enemy {
 public:
     BasicEnemy(cocos2d::Scene * scene, cocos2d::Point position);
-    void getHit() override;
+    bool getHit() override;
 
 };
 
