@@ -2,8 +2,18 @@
 
 USING_NS_CC;
 
-Scene *HelloWorld::createScene() {
-    return HelloWorld::create();
+Scene* GamePlay::createScene()
+{
+    auto scene = Scene::createWithPhysics();
+    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+    scene->getPhysicsWorld()->setGravity(Vec2(0, 0));
+
+    auto layer = GamePlay::create();
+    layer->setPhysicsWorld(scene->getPhysicsWorld());
+
+    scene->addChild(layer);
+
+    return scene;
 }
 
 static void problemLoading(const char *filename) {
@@ -11,53 +21,70 @@ static void problemLoading(const char *filename) {
     printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in HelloWorldScene.cpp\n");
 }
 
-bool HelloWorld::init() {
+bool GamePlay::init() {
     if (!Scene::init()) {
         return false;
     }
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    auto closeItem = MenuItemImage::create(
-            "CloseNormal.png",
-            "CloseSelected.png",
-            CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
+    spaceShip.create(this, Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
 
-    if (closeItem == nullptr ||
-        closeItem->getContentSize().width <= 0 ||
-        closeItem->getContentSize().height <= 0) {
-        problemLoading("'CloseNormal.png' and 'CloseSelected.png'");
-    } else {
-        float x = origin.x + visibleSize.width - closeItem->getContentSize().width / 2;
-        float y = origin.y + closeItem->getContentSize().height / 2;
-        closeItem->setPosition(Vec2(x, y));
-    }
 
-    auto menu = Menu::create(closeItem, NULL);
-    menu->setPosition(Vec2::ZERO);
-    this->addChild(menu, 1);
 
-    auto label = Label::createWithTTF("Hello World", "fonts/Marker Felt.ttf", 24);
-    if (label == nullptr) {
-        problemLoading("'fonts/Marker Felt.ttf'");
-    } else {
-        label->setPosition(Vec2(origin.x + visibleSize.width / 2,
-                                origin.y + visibleSize.height - label->getContentSize().height));
-        this->addChild(label, 1);
-    }
+    auto listener = EventListenerTouchOneByOne::create();
+    listener->setSwallowTouches(true);
 
-    auto sprite = Sprite::create("HelloWorld.png");
-    if (sprite == nullptr) {
-        problemLoading("'HelloWorld.png'");
-    } else {
-        sprite->setPosition(
-                Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
-        this->addChild(sprite, 0);
-    }
+    listener->onTouchBegan = CC_CALLBACK_2(GamePlay::onTouchBegan, this);
+    listener->onTouchMoved = CC_CALLBACK_2(GamePlay::onTouchMoved, this);
+    listener->onTouchEnded = CC_CALLBACK_2(GamePlay::onTouchEnded, this);
+
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+
+    this->scheduleUpdate();
+
+    auto contactListeneer = EventListenerPhysicsContact::create();
+    contactListeneer->onContactBegin = CC_CALLBACK_1(GamePlay::onContactBegin, this);
+    this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListeneer, this);
+
+    this->scheduleUpdate();
     return true;
 }
 
+bool GamePlay::onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *event) {
+    CCLOG("hsajdklhfjsdhjfhsjkdfa");
+    touched = true;
+    touchPoint = Point(touch->getLocation().x, touch->getLocation().y);
+    spaceShip.startShooting();
 
-void HelloWorld::menuCloseCallback(Ref *pSender) {
-    Director::getInstance()->end();
+    return true;
+}
+
+bool GamePlay::onTouchMoved(cocos2d::Touch *touch, cocos2d::Event *event) {
+    CCLOG("hsajdklhfjsdhjfhsjkdfa moving");
+    touched = true;
+    touchPoint = Point(touch->getLocation().x, touch->getLocation().y);
+
+    return true;
+}
+
+bool GamePlay::onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *event) {
+    touched = false;
+    spaceShip.stopShooting();
+
+    return true;
+}
+
+void GamePlay::update(float delta) {
+    if(touched){
+        //moveShip(shipSpeed, touchPoint, delta);
+        spaceShip.move(touchPoint, delta);
+    }
+}
+
+bool GamePlay::onContactBegin(cocos2d::PhysicsContact &contact) {
+    PhysicsBody *a = contact.getShapeA()->getBody();
+    PhysicsBody *b = contact.getShapeB()->getBody();
+
+    return true;
 }

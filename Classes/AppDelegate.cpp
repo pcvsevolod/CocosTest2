@@ -1,5 +1,8 @@
 #include "AppDelegate.h"
 #include "GamePlayScene.h"
+#include "SpaceShip.h"
+#include "Gun.h"
+#include "BasicGun.h"
 
 // #define USE_AUDIO_ENGINE 1
 
@@ -69,7 +72,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     register_all_packages();
 
-    auto scene = HelloWorld::createScene();
+    auto scene = GamePlay::createScene();
 
     director->runWithScene(scene);
 
