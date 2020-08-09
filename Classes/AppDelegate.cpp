@@ -3,6 +3,9 @@
 #include "SpaceShip.h"
 #include "Gun.h"
 #include "BasicGun.h"
+#include "Enemy.h"
+#include "BasicEnemy.h"
+#include "EnemyController.h"
 
 // #define USE_AUDIO_ENGINE 1
 

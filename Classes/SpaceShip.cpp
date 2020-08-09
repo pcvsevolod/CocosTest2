@@ -7,6 +7,11 @@ void SpaceShip::create(cocos2d::Scene * scene, cocos2d::Point position) {
     this->scene = scene;
     sprite = Sprite::create("SpaceShip.png");
     sprite->setPosition(position);
+    auto spaceShipBody = PhysicsBody::createCircle(sprite->getContentSize().width / 2, PHYSICSBODY_MATERIAL_DEFAULT);
+    spaceShipBody->setDynamic(false);
+    spaceShipBody->setCollisionBitmask(collisionBitmask);
+    spaceShipBody->setContactTestBitmask(true);
+    sprite->setPhysicsBody(spaceShipBody);
     this->scene->addChild(sprite, 0);
 
     gun = new BasicGun(scene, this->sprite);

@@ -61,6 +61,9 @@ list(APPEND GAME_SOURCE
         Classes/SpaceShip.cpp
         Classes/Gun.cpp
         Classes/BasicGun.cpp
+        Classes/Enemy.cpp
+        Classes/BasicEnemy.cpp
+        Classes/EnemyController.cpp
         )
 list(APPEND GAME_HEADER
         Classes/AppDelegate.h
@@ -68,6 +71,9 @@ list(APPEND GAME_HEADER
         Classes/SpaceShip.h
         Classes/Gun.h
         Classes/BasicGun.h
+        Classes/Enemy.h
+        Classes/BasicEnemy.h
+        Classes/EnemyController.h
         )
 
 if (ANDROID)

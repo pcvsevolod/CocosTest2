@@ -4,15 +4,23 @@
 #include "cocos2d.h"
 
 #include "SpaceShip.h"
+#include "EnemyController.h"
 
 class GamePlay : public cocos2d::Scene {
 private:
     bool touched;
     cocos2d::Point touchPoint;
     SpaceShip spaceShip;
+    EnemyController * ec;
+
+    void initTouch();
+    void initCollision();
+    void initUpdate();
 
 
 public:
+    ~GamePlay();
+
     static cocos2d::Scene *createScene();
 
     virtual bool init();
