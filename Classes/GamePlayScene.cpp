@@ -2,6 +2,9 @@
 
 USING_NS_CC;
 
+#include "GameWonScene.h"
+#include "GameOverScene.h"
+
 Scene* GamePlay::createScene()
 {
     auto scene = Scene::createWithPhysics();
@@ -162,8 +165,9 @@ void GamePlay::updateLivesLabel() {
     livesLabel->setString("Lives: " + std::to_string(spaceShip.lives));
     if(spaceShip.lives <= 0) {
         livesLabel->setString("Game Over");
-        //auto scene = GameOverScene::createScene();
-        //Director::getInstance()->replaceScene(scene);
+        UserDefault::getInstance()->setIntegerForKey("score", score);
+        auto scene = GameOver::createScene();
+        Director::getInstance()->replaceScene(scene);
     }
 }
 
@@ -172,11 +176,7 @@ void GamePlay::updateScoreLabel() {
 }
 
 void GamePlay::checkEnemiesOffScreen() {
-    //bool waveComplete = ec->checkOffScreen();
     ec->checkOffScreen();
-    /*if (waveComplete) {
-        next();
-    }*/
 }
 
 void GamePlay::initCheckOffScreen() {
@@ -199,6 +199,9 @@ void GamePlay::next() {
     }
     if (level == 1) {
         level ++;
+        UserDefault::getInstance()->setIntegerForKey("score", score);
+        auto scene = GameWon::createScene();
+        Director::getInstance()->replaceScene(scene);
         return;
     }
 }
