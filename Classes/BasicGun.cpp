@@ -4,14 +4,10 @@
 USING_NS_CC;
 
 void BasicGun::shoot() {
+    //CCLOG("hsajdklhfjsdhjfhsjkdfa BASIC SHOOTING SHOOTING");
     std::vector<Point> directions;
 
     directions.emplace_back(0, 1000);
-    if (level == 1) {
-        directions.emplace_back(-100, 1000);
-        directions.emplace_back(100, 1000);
-
-    }
 
     for (auto & dir : directions){
         auto projectile = Sprite::create("GoodBullet.png");
@@ -34,7 +30,6 @@ void BasicGun::shoot() {
 void BasicGun::startShooting() {
     auto delay = DelayTime::create(firingDelay);
     auto func = CallFunc::create(CC_CALLBACK_0(BasicGun::shoot, this));
-    //auto func = CallFunc::create(std::bind(&BasicGun::shoot, scene));
     auto seq = Sequence::create(delay, func, NULL);
     auto action = RepeatForever::create(seq);
     action->setTag(tag);
@@ -43,8 +38,4 @@ void BasicGun::startShooting() {
 
 void BasicGun::stopShooting() {
     scene->stopActionByTag(tag);
-}
-
-void BasicGun::upgrade() {
-    level = 1;
 }

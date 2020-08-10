@@ -6,7 +6,6 @@
 
 class BasicGun : public Gun {
 private:
-    int level = 0;
     float firingDelay = 0.2;
     const int tag = 124;
 public:
@@ -14,7 +13,6 @@ public:
     void shoot() override;
     void startShooting() override;
     void stopShooting() override;
-    void upgrade();
 };
 
 

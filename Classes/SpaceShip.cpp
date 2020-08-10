@@ -59,7 +59,7 @@ void SpaceShip::buff(cocos2d::Node *buff) {
 }
 
 void SpaceShip::upgradeGun() {
-    /*if (gunLevel == 1) {
+    if (gunLevel == 1) {
         CCLOG("hsajdklhfjsdhjfhsjkdfa MAX GUN MAX GUN");
         return;
     }
@@ -69,6 +69,5 @@ void SpaceShip::upgradeGun() {
     gunLevel = 1;
     if (shooting) {
         startShooting();
-    }*/
-    ((BasicGun*)gun)->upgrade();
+    }
 }

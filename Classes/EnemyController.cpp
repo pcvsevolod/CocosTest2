@@ -57,7 +57,10 @@ EnemyController::EnemyController(cocos2d::Scene *scene) {
 }
 
 int EnemyController::getHit(cocos2d::Node *node) {
-    for (int i = 0; i < enemies.size(); ++i) {
+    if(enemies.empty() || node == nullptr) {
+        return 0;
+    }
+    for (int i = enemies.size() - 1; i >= 0 ; --i) {
         if (enemies[i]->sprite == node) {
             bool dead = enemies[i]->getHit();
             if (dead) {
