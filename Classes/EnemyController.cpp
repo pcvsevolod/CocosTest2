@@ -132,7 +132,7 @@ void EnemyController::checkOffScreen() {
 }
 
 void EnemyController::dropBuff(cocos2d::Point pos) {
-    if (std::rand() % 100 < 10) {
+    if (std::rand() % 100 < 100) {
         std::string buffName = "Life";
         if (std::rand() % 100 < 50) {
             buffName = "Upgrade";

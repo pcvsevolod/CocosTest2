@@ -1,20 +1,17 @@
-#include "BasicGun.h"
+#include "AdvancedGun.h"
 #include "SpaceShip.h"
 
 USING_NS_CC;
 
-void BasicGun::shoot() {
+void AdvancedGun::shoot() {
     std::vector<Point> directions;
 
+    directions.emplace_back(-100, 1000);
     directions.emplace_back(0, 1000);
-    if (level == 1) {
-        directions.emplace_back(-100, 1000);
-        directions.emplace_back(100, 1000);
-
-    }
+    directions.emplace_back(100, 1000);
 
     for (auto & dir : directions){
-        auto projectile = Sprite::create("GoodBullet.png");
+        auto projectile = Sprite::create("GoodBullet2.png");
         projectile->setPosition(sprite->getPosition());
 
         auto projectileBody = PhysicsBody::createCircle(projectile->getContentSize().width / 2, PHYSICSBODY_MATERIAL_DEFAULT);
@@ -31,9 +28,9 @@ void BasicGun::shoot() {
     }
 }
 
-void BasicGun::startShooting() {
+void AdvancedGun::startShooting() {
     auto delay = DelayTime::create(firingDelay);
-    auto func = CallFunc::create(CC_CALLBACK_0(BasicGun::shoot, this));
+    auto func = CallFunc::create(CC_CALLBACK_0(AdvancedGun::shoot, this));
     //auto func = CallFunc::create(std::bind(&BasicGun::shoot, scene));
     auto seq = Sequence::create(delay, func, NULL);
     auto action = RepeatForever::create(seq);
@@ -41,10 +38,6 @@ void BasicGun::startShooting() {
     scene->runAction(action);
 }
 
-void BasicGun::stopShooting() {
+void AdvancedGun::stopShooting() {
     scene->stopActionByTag(tag);
-}
-
-void BasicGun::upgrade() {
-    level = 1;
 }

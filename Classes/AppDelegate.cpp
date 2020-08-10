@@ -9,6 +9,7 @@
 #include "GameWonScene.h"
 #include "GameOverScene.h"
 #include "AdvancedEnemy.h"
+#include "AdvancedGun.h"
 
 // #define USE_AUDIO_ENGINE 1
 

@@ -10,6 +10,8 @@ private:
     cocos2d::Scene * scene;
     float speed = 250.0;
     Gun * gun;
+    int gunLevel = 0;
+    bool shooting = false;
 
     void upgradeGun();
 public:

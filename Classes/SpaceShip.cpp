@@ -1,5 +1,6 @@
 #include "SpaceShip.h"
 #include "BasicGun.h"
+#include "AdvancedGun.h"
 
 USING_NS_CC;
 
@@ -35,10 +36,12 @@ void SpaceShip::move(cocos2d::Point destination, float delta) {
 }
 
 void SpaceShip::startShooting() {
+    shooting = true;
     gun->startShooting();
 }
 
 void SpaceShip::stopShooting() {
+    shooting = false;
     gun->stopShooting();
 }
 
@@ -56,5 +59,16 @@ void SpaceShip::buff(cocos2d::Node *buff) {
 }
 
 void SpaceShip::upgradeGun() {
-    
+    /*if (gunLevel == 1) {
+        CCLOG("hsajdklhfjsdhjfhsjkdfa MAX GUN MAX GUN");
+        return;
+    }
+    gun->stopShooting();
+    delete gun;
+    gun = new AdvancedGun(scene, this->sprite);
+    gunLevel = 1;
+    if (shooting) {
+        startShooting();
+    }*/
+    ((BasicGun*)gun)->upgrade();
 }
