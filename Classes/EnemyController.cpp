@@ -135,9 +135,9 @@ void EnemyController::checkOffScreen() {
 }
 
 void EnemyController::dropBuff(cocos2d::Point pos) {
-    if (std::rand() % 100 < 100) {
+    if (random(0, 100) < 100) {
         std::string buffName = "Life";
-        if (std::rand() % 100 < 50) {
+        if (random(0, 100) < 50) {
             buffName = "Upgrade";
         }
         else {
@@ -152,9 +152,9 @@ void EnemyController::dropBuff(cocos2d::Point pos) {
 
         auto wait = DelayTime::create(0.1);
         auto func = CallFunc::create(CC_CALLBACK_0(EnemyController::test, this, buff, buffName));
-        auto move = MoveBy::create(10, Point(0, -100));
+        auto move = MoveBy::create(10, shotDirection);
         auto removeSelf = RemoveSelf::create();
-        buff->runAction(Sequence::create(wait, func, move, removeSelf, NULL));
+        buff->runAction(Sequence::create(func, move, removeSelf, NULL));
     }
 }
 
@@ -162,7 +162,6 @@ void EnemyController::test(cocos2d::Sprite * buff, std::string buffName) {
     auto buffBody = PhysicsBody::createCircle(buff->getContentSize().width / 4, PHYSICSBODY_MATERIAL_DEFAULT);
     buffBody->setDynamic(false);
     buffBody->setCollisionBitmask(EnemyController::buffCollisionBitmask);
-    //buffBody->setCollisionBitmask(128);
     buffBody->setContactTestBitmask(true);
     buff->setPhysicsBody(buffBody);
     buff->setName(buffName);
