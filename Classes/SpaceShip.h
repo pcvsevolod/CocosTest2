@@ -10,6 +10,8 @@ private:
     cocos2d::Scene * scene;
     float speed = 250.0;
     Gun * gun;
+
+    void upgradeGun();
 public:
     cocos2d::Sprite * sprite;
     static const int collisionBitmask = 1;
@@ -20,6 +22,7 @@ public:
     void startShooting();
     void stopShooting();
     void getHit();
+    void buff(cocos2d::Node * buff);
 };
 
 

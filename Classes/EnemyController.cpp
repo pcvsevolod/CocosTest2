@@ -38,7 +38,6 @@ void EnemyController::place2() {
     float spacing = 20;
     for (int i = 0; i < 4; ++i) {
         for (int j = 1; j < 2; ++j) {
-            CCLOG("hsajdklhfjsdhjfhsjkdfa placing 2, i = %d, j = %d", i, j);
             badPositions.emplace_back(visibleSize.width / 2 + origin.x - j * spacing,
                                       visibleSize.height / 8 * 7 + origin.y - i * spacing);
             badPositions.emplace_back(visibleSize.width / 2 + origin.x + j * spacing,
@@ -48,10 +47,8 @@ void EnemyController::place2() {
                                   visibleSize.height / 8 * 7 + origin.y - i * spacing);
     }
     for (auto &bp : badPositions) {
-        CCLOG("hsajdklhfjsdhjfhsjkdfa placing sprites 2, x = %f, y = %f", bp.x, bp.y);
         auto enemy = new AdvancedEnemy(scene, bp);
         enemies.emplace_back(enemy);
-        CCLOG("hsajdklhfjsdhjfhsjkdfa placing 2, size = %d", enemies.size());
     }
 }
 
@@ -64,6 +61,7 @@ int EnemyController::getHit(cocos2d::Node *node) {
         if (enemies[i]->sprite == node) {
             bool dead = enemies[i]->getHit();
             if (dead) {
+                dropBuff(enemies[i]->sprite->getPosition());
                 int score = enemies[i]->getScore();
                 scene->removeChild(node);
                 delete enemies[i];
@@ -132,3 +130,38 @@ void EnemyController::checkOffScreen() {
     }
     CCLOG("hsajdklhfjsdhjfhsjkdfa check off screen, size = %d", enemies.size());
 }
+
+void EnemyController::dropBuff(cocos2d::Point pos) {
+    if (std::rand() % 100 < 10) {
+        std::string buffName = "Life";
+        if (std::rand() % 100 < 50) {
+            buffName = "Upgrade";
+        }
+        else {
+            buffName = "Life";
+        }
+
+        auto buff = Sprite::create(buffName + ".png");
+        buff->retain();
+        buff->setPosition(pos);
+
+        scene->addChild(buff);
+
+        auto wait = DelayTime::create(0.1);
+        auto func = CallFunc::create(CC_CALLBACK_0(EnemyController::test, this, buff, buffName));
+        auto move = MoveBy::create(10, Point(0, -100));
+        auto removeSelf = RemoveSelf::create();
+        buff->runAction(Sequence::create(wait, func, move, removeSelf, NULL));
+    }
+}
+
+void EnemyController::test(cocos2d::Sprite * buff, std::string buffName) {
+    auto buffBody = PhysicsBody::createCircle(buff->getContentSize().width / 4, PHYSICSBODY_MATERIAL_DEFAULT);
+    buffBody->setDynamic(false);
+    buffBody->setCollisionBitmask(EnemyController::buffCollisionBitmask);
+    //buffBody->setCollisionBitmask(128);
+    buffBody->setContactTestBitmask(true);
+    buff->setPhysicsBody(buffBody);
+    buff->setName(buffName);
+}
+

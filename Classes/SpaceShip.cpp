@@ -45,3 +45,16 @@ void SpaceShip::stopShooting() {
 void SpaceShip::getHit() {
     lives--;
 }
+
+void SpaceShip::buff(cocos2d::Node *buff) {
+    if (buff->getName() == "Life") {
+        lives++;
+    }
+    if (buff->getName() == "Upgrade") {
+        upgradeGun();
+    }
+}
+
+void SpaceShip::upgradeGun() {
+    
+}

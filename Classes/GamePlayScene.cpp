@@ -95,14 +95,24 @@ bool GamePlay::onContactBegin(cocos2d::PhysicsContact &contact) {
     if(EnemyController::collisionBitmask == a->getCollisionBitmask() && SpaceShip::projectileCollisionBitmask == b->getCollisionBitmask()){
         //CCLOG("hsajdklhfjsdhjfhsjkdfa enemy hit");
         //bool waveComplete = ec->getHit(a->getNode());
-        score += ec->getHit(a->getNode());
+        Point pos = a->getPosition();
+        int newScore = ec->getHit(a->getNode());
+        if (!newScore) {
+            //ec->dropBuff(pos);
+        }
+        score += newScore;
         this->removeChild(b->getNode());
         updateScoreLabel();
     }
     if(EnemyController::collisionBitmask == b->getCollisionBitmask() && SpaceShip::projectileCollisionBitmask == a->getCollisionBitmask()){
         //CCLOG("hsajdklhfjsdhjfhsjkdfa enemy hit");
         //bool waveComplete = ec->getHit(b->getNode());
-        score += ec->getHit(b->getNode());
+        Point pos = b->getPosition();
+        int newScore = ec->getHit(b->getNode());
+        if (!newScore) {
+            //ec->dropBuff(pos);
+        }
+        score += newScore;
         this->removeChild(a->getNode());
         updateScoreLabel();
     }
@@ -116,6 +126,19 @@ bool GamePlay::onContactBegin(cocos2d::PhysicsContact &contact) {
     if(EnemyController::projectileCollisionBitmask == b->getCollisionBitmask() && SpaceShip::collisionBitmask == a->getCollisionBitmask()){
         //CCLOG("hsajdklhfjsdhjfhsjkdfa spaceship hit");
         spaceShip.getHit();
+        this->removeChild(b->getNode());
+        updateLivesLabel();
+    }
+
+    if(EnemyController::buffCollisionBitmask == a->getCollisionBitmask() && SpaceShip::collisionBitmask == b->getCollisionBitmask()){
+        //CCLOG("hsajdklhfjsdhjfhsjkdfa spaceship hit");
+        spaceShip.buff(a->getNode());
+        this->removeChild(a->getNode());
+        updateLivesLabel();
+    }
+    if(EnemyController::buffCollisionBitmask == b->getCollisionBitmask() && SpaceShip::collisionBitmask == a->getCollisionBitmask()){
+        //CCLOG("hsajdklhfjsdhjfhsjkdfa spaceship hit");
+        spaceShip.buff(b->getNode());
         this->removeChild(b->getNode());
         updateLivesLabel();
     }
