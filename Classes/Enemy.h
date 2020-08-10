@@ -11,6 +11,7 @@ public:
     Enemy(cocos2d::Scene * scene);
 
     virtual bool getHit() = 0;
+    virtual int getScore() = 0;
 
 };
 

@@ -9,7 +9,7 @@ void BasicGun::shoot() {
     directions.emplace_back(0, 1000);
 
     for (auto & dir : directions){
-        auto projectile = Sprite::create("Projectile.png");
+        auto projectile = Sprite::create("GoodBullet.png");
         projectile->setPosition(sprite->getPosition());
 
         auto projectileBody = PhysicsBody::createCircle(projectile->getContentSize().width / 2, PHYSICSBODY_MATERIAL_DEFAULT);

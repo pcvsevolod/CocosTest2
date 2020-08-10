@@ -11,6 +11,7 @@ private:
 public:
     BasicEnemy(cocos2d::Scene * scene, cocos2d::Point position);
     bool getHit() override;
+    int getScore() override;
 
 };
 

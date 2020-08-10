@@ -16,7 +16,8 @@ public:
 
     EnemyController(cocos2d::Scene * scene);
     void place1();
-    void getHit(cocos2d::Node * node);
+    void place2();
+    int getHit(cocos2d::Node * node);
     void startShootingBack();
     void checkOffScreen();
 

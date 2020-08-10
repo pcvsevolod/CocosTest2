@@ -4,7 +4,7 @@
 USING_NS_CC;
 
 BasicEnemy::BasicEnemy(cocos2d::Scene * scene, cocos2d::Point position) : Enemy(scene) {
-    sprite = Sprite::create("BasicEnemy.png");
+    sprite = Sprite::create("BadShip2.png");
     sprite->setPosition(position);
     auto badShipBody = PhysicsBody::createCircle(sprite->getContentSize().width / 2, PHYSICSBODY_MATERIAL_DEFAULT);
     badShipBody->setDynamic(false);
@@ -26,4 +26,8 @@ void BasicEnemy::startMoving() {
     auto seq = Sequence::create(moveLeft, moveDown, moveRight, moveDown, NULL);
     auto rep = RepeatForever::create(seq);
     sprite->runAction(rep);
+}
+
+int BasicEnemy::getScore() {
+    return 1;
 }

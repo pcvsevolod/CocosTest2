@@ -8,19 +8,25 @@
 
 class GamePlay : public cocos2d::Scene {
 private:
+    const int tagOffScreen = 1;
+    int level = 0;
+    int score = 0;
+
     bool touched;
     cocos2d::Point touchPoint;
     SpaceShip spaceShip;
     EnemyController * ec;
     cocos2d::Label * livesLabel;
+    cocos2d::Label * scoreLabel;
 
-    void updateLabel();
+    void updateLivesLabel();
+    void updateScoreLabel();
     void checkEnemiesOffScreen();
 
     void initTouch();
     void initCollision();
     void initUpdate();
-    void initLabel();
+    void initLabels();
     void initCheckOffScreen();
 
 
@@ -29,6 +35,8 @@ public:
     cocos2d::Vec2 origin;
 
     ~GamePlay();
+
+    void next();
 
     static cocos2d::Scene *createScene();
 

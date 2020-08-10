@@ -5,7 +5,7 @@ USING_NS_CC;
 
 void SpaceShip::create(cocos2d::Scene * scene, cocos2d::Point position) {
     this->scene = scene;
-    sprite = Sprite::create("SpaceShip.png");
+    sprite = Sprite::create("SpaceShip1.png");
     sprite->setPosition(position);
     auto spaceShipBody = PhysicsBody::createCircle(sprite->getContentSize().width / 2, PHYSICSBODY_MATERIAL_DEFAULT);
     spaceShipBody->setDynamic(false);

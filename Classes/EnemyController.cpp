@@ -3,6 +3,7 @@
 USING_NS_CC;
 
 #include "BasicEnemy.h"
+#include "GamePlayScene.h"
 
 void EnemyController::place1() {
     auto visibleSize = Director::getInstance()->getVisibleSize();
@@ -26,20 +27,48 @@ void EnemyController::place1() {
     }
 }
 
+void EnemyController::place2() {
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+    std::vector<Point> badPositions;
+
+    for (int i = 0; i < 4; ++i) {
+        for (int j = 1; j < 3; ++j) {
+            CCLOG("hsajdklhfjsdhjfhsjkdfa placing 2, i = %d, j = %d", i, j);
+            badPositions.emplace_back(visibleSize.width / 2 + origin.x - j * 8,
+                                      visibleSize.height / 8 * 7 + origin.y - i * 8);
+            badPositions.emplace_back(visibleSize.width / 2 + origin.x + j * 8,
+                                      visibleSize.height / 8 * 7 + origin.y - i * 8);
+        }
+        badPositions.emplace_back(visibleSize.width / 2 + origin.x,
+                                  visibleSize.height / 8 * 7 + origin.y - i * 8);
+    }
+    for (auto &bp : badPositions) {
+        CCLOG("hsajdklhfjsdhjfhsjkdfa placing sprites 2, x = %f, y = %f", bp.x, bp.y);
+        auto enemy = new BasicEnemy(scene, bp);
+        enemies.emplace_back(enemy);
+        CCLOG("hsajdklhfjsdhjfhsjkdfa placing 2, size = %d", enemies.size());
+    }
+}
+
 EnemyController::EnemyController(cocos2d::Scene *scene) {
     this->scene = scene;
 }
 
-void EnemyController::getHit(cocos2d::Node *node) {
+int EnemyController::getHit(cocos2d::Node *node) {
     for (int i = 0; i < enemies.size(); ++i) {
         if (enemies[i]->sprite == node) {
             bool dead = enemies[i]->getHit();
             if (dead) {
+                int score = enemies[i]->getScore();
                 scene->removeChild(node);
                 delete enemies[i];
                 enemies.erase(enemies.begin() + i);
+                return score;
             }
-            return;
+            CCLOG("hsajdklhfjsdhjfhsjkdfa getHit size = %d", enemies.size());
+            return 0;
         }
     }
 }
@@ -75,13 +104,21 @@ void EnemyController::shootBack() {
 }
 
 void EnemyController::checkOffScreen() {
+    if (enemies.empty()) {
+        ((GamePlay*)scene)->next();
+        return ;
+    }
     for (int i = enemies.size() - 1; i >= 0; --i) {
         if (enemies[i]->sprite->getPosition().y < 0) {
             scene->removeChild(enemies[i]->sprite);
             delete enemies[i];
             enemies.erase(enemies.begin() + i);
-            return;
+            if (enemies.empty()) {
+                ((GamePlay*)scene)->next();
+                return ;
+            }
+            return ;
         }
     }
-    CCLOG("hsajdklhfjsdhjfhsjkdfa size = %d", enemies.size());
+    CCLOG("hsajdklhfjsdhjfhsjkdfa check off screen, size = %d", enemies.size());
 }
