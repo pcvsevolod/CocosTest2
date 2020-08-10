@@ -3,6 +3,7 @@
 USING_NS_CC;
 
 #include "BasicEnemy.h"
+#include "AdvancedEnemy.h"
 #include "GamePlayScene.h"
 
 void EnemyController::place1() {
@@ -28,25 +29,27 @@ void EnemyController::place1() {
 }
 
 void EnemyController::place2() {
+    stage = 1;
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
     std::vector<Point> badPositions;
 
+    float spacing = 20;
     for (int i = 0; i < 4; ++i) {
-        for (int j = 1; j < 3; ++j) {
+        for (int j = 1; j < 2; ++j) {
             CCLOG("hsajdklhfjsdhjfhsjkdfa placing 2, i = %d, j = %d", i, j);
-            badPositions.emplace_back(visibleSize.width / 2 + origin.x - j * 8,
-                                      visibleSize.height / 8 * 7 + origin.y - i * 8);
-            badPositions.emplace_back(visibleSize.width / 2 + origin.x + j * 8,
-                                      visibleSize.height / 8 * 7 + origin.y - i * 8);
+            badPositions.emplace_back(visibleSize.width / 2 + origin.x - j * spacing,
+                                      visibleSize.height / 8 * 7 + origin.y - i * spacing);
+            badPositions.emplace_back(visibleSize.width / 2 + origin.x + j * spacing,
+                                      visibleSize.height / 8 * 7 + origin.y - i * spacing);
         }
         badPositions.emplace_back(visibleSize.width / 2 + origin.x,
-                                  visibleSize.height / 8 * 7 + origin.y - i * 8);
+                                  visibleSize.height / 8 * 7 + origin.y - i * spacing);
     }
     for (auto &bp : badPositions) {
         CCLOG("hsajdklhfjsdhjfhsjkdfa placing sprites 2, x = %f, y = %f", bp.x, bp.y);
-        auto enemy = new BasicEnemy(scene, bp);
+        auto enemy = new AdvancedEnemy(scene, bp);
         enemies.emplace_back(enemy);
         CCLOG("hsajdklhfjsdhjfhsjkdfa placing 2, size = %d", enemies.size());
     }
@@ -86,7 +89,14 @@ void EnemyController::shootBack() {
         return;
     }
     auto shooter = enemies[std::rand() % enemies.size()];
-    auto projectile = Sprite::create("BadBullet.png");
+    std::string projFile;
+    if (stage == 0) {
+        projFile = "BadBullet.png";
+    }
+    else {
+        projFile = "BadBullet2.png";
+    }
+    auto projectile = Sprite::create(projFile);
     projectile->setPosition(shooter->sprite->getPosition());
 
     auto projectileBody = PhysicsBody::createCircle(projectile->getContentSize().width / 2,
@@ -98,7 +108,7 @@ void EnemyController::shootBack() {
 
     scene->addChild(projectile);
 
-    auto move = MoveBy::create(shotDuration, shotDirection);
+    auto move = MoveBy::create(shotDuration / 3 * 2, shotDirection);
     auto removeSelf = RemoveSelf::create();
     projectile->runAction(Sequence::create(move, removeSelf, NULL));
 }

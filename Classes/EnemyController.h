@@ -22,6 +22,7 @@ public:
     void checkOffScreen();
 
 private:
+    int stage = 0;
     void shootBack();
 };
 

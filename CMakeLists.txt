@@ -66,6 +66,7 @@ list(APPEND GAME_SOURCE
         Classes/EnemyController.cpp
         Classes/GameWonScene.cpp
         Classes/GameOverScene.cpp
+        Classes/AdvancedEnemy.cpp
         )
 list(APPEND GAME_HEADER
         Classes/AppDelegate.h
@@ -78,6 +79,7 @@ list(APPEND GAME_HEADER
         Classes/EnemyController.h
         Classes/GameWonScene.h
         Classes/GameOverScene.h
+        Classes/AdvancedEnemy.h
         )
 
 if (ANDROID)

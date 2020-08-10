@@ -8,6 +8,7 @@
 #include "EnemyController.h"
 #include "GameWonScene.h"
 #include "GameOverScene.h"
+#include "AdvancedEnemy.h"
 
 // #define USE_AUDIO_ENGINE 1
 
